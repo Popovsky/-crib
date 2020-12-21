@@ -1,11 +1,13 @@
-Array.prototype.myForEach = function (callback) {
+Array.prototype.myReduce = function (callback, initialValue = 0) {
+  let accumulator = initialValue;
   for (let i = 0; i < this.length; i++) {
-    callback(this[i], i, this);
+    accumulator = callback(accumulator, this[i], i, this);
   }
+  return accumulator;
 };
 
-const array = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-const mapResult = array.forEach((item, i, arr) => console.log(arr[i] * item));
-console.log(mapResult);
-const myMapResult = array.myForEach((item, i, arr) => console.log(arr[i] * item));
-console.log(myMapResult);
+const array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 56, 6];
+const reduceResult = array.reduce((acc, item) => acc + item, 0);
+console.log(reduceResult);
+const myReduceResult = array.myReduce((acc, item) => acc + item, 0);
+console.log(myReduceResult);
