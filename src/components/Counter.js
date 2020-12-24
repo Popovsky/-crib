@@ -1,39 +1,64 @@
-import React, {useLayoutEffect, useState} from 'react';
+import React, {useContext, useEffect, useLayoutEffect, useRef, useState} from 'react';
+import {MyContext} from '../App';
+import './styles.css';
 
 const Counter = () => {
+  const {red, green} = useContext(MyContext);
   const [count, setCount] = useState(0);
-  // Ленивая инициализация ------------------------
-  const [step, setStep] = useState(() => {
-    const initialStep = 0;
-    return initialStep;
-  });
-  // ----------------------------------------------
-  console.log('render');
+  const [step, setStep] = useState(1);
+  const [textInputValue, setTextInputValue] = useState('');
+  const [prevState, setPrevState] = useState(null);
+  const ref = useRef(null);
+  const prevCountRef = useRef(null);
+
+  const increment = () => {
+    setCount(prevState => {
+      setPrevState(prevState);
+      return prevState + step;
+    });
+  };
+
+  const decrement = () => {
+    setCount(prevState => {
+      setPrevState(prevState);
+      return prevState - step;
+    });
+  };
+
+  const cancel = () => {
+    setCount(0);
+    setStep(1);
+  };
+
+  const textInputHandler = event => {
+    setTextInputValue(event.target.value);
+    console.log(ref.current.value);
+  };
+
   useLayoutEffect(() => {
-    console.time();
-    let temp = 0;
-    for (let i = 0; i < 4000000000; i++) {
-      temp++;
-    }
-    console.timeEnd();
-    console.log('useLayoutEffect');
-  }, []);
+    prevCountRef.current = count;
+  })
+
+  useEffect(() => {
+    prevCountRef.current = count;
+  });
+
   return (
     <div>
       <div>
-        <h1>{count}</h1>
+        <h1>Count: {count}</h1>
+        <h1>Prev count: {prevCountRef.current}</h1>
+        <h1>Prev state: {prevState}</h1>
       </div>
       <div>
-        <input type="number" value={step} onChange={e => setStep(Number(e.target.value))}/>
+        <input type="number" value={step} onChange={event => setStep(Number(event.target.value))}/>
+        <br/>
+        <input ref={ref} type="text" value={textInputValue} onChange={textInputHandler}/>
       </div>
       <div>
-        <button onClick={() => setCount(prevState => prevState + step)}>+</button>
-        <button onClick={() => setCount(prevState => prevState - step)}>-</button>
-        <button onClick={() => {
-          setCount(0);
-          setStep(0);
-        }}>Cancel
-        </button>
+        <button className={green} onClick={increment}>+</button>
+        <button className={red} onClick={decrement}>-</button>
+        <button onClick={cancel}>Cancel</button>
       </div>
     </div>
   );
