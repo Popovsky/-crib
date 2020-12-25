@@ -1,6 +1,14 @@
-import React, {useContext, useEffect, useLayoutEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
 import {MyContext} from '../App';
 import './styles.css';
+
+const someUselessFunc = a => {
+  let temp = 0;
+  for (let i = 0; i < 1000000000; i++) {
+    temp++;
+  }
+  return temp + a;
+};
 
 const Counter = () => {
   const {red, green} = useContext(MyContext);
@@ -32,16 +40,17 @@ const Counter = () => {
 
   const textInputHandler = event => {
     setTextInputValue(event.target.value);
-    console.log(ref.current.value);
   };
 
   useLayoutEffect(() => {
     prevCountRef.current = count;
-  })
+  });
 
   useEffect(() => {
     prevCountRef.current = count;
   });
+
+  const someUselessValue = useMemo(() => someUselessFunc(count), [count]);
 
   return (
     <div>
@@ -49,6 +58,7 @@ const Counter = () => {
         <h1>Count: {count}</h1>
         <h1>Prev count: {prevCountRef.current}</h1>
         <h1>Prev state: {prevState}</h1>
+        <h1>Some useless value: {someUselessValue}</h1>
       </div>
       <div>
         <input type="number" value={step} onChange={event => setStep(Number(event.target.value))}/>
