@@ -1,16 +1,25 @@
 let array = [...new Array(10)].map(() => Math.round(Math.random() * 10));
 console.log(array);
-const bubbleSort = arr => {
-  let temp;
-  for (let i = 0; i < arr.length; i++) {
-    for (let j = i + 1; j < arr.length; j++) {
-      if (arr[i] > arr[j]) {
-        temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
+const quickSort = arr => {
+  if (arr.length < 2) {
+    return arr;
+  } else {
+    let middle = arr[Math.floor(arr.length / 2)];
+    let less = [];
+    let equal = [];
+    let more = [];
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] < middle) {
+        less.push(arr[i]);
+      }
+      if (arr[i] > middle) {
+        more.push(arr[i]);
+      }
+      if (arr[i] === middle) {
+        equal.push(arr[i]);
       }
     }
+    return [...quickSort(less), ...equal, ...quickSort(more)];
   }
 };
-bubbleSort(array);
-console.log(array);
+console.log(quickSort(array));
