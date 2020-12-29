@@ -1,10 +1,10 @@
 let array = [...new Array(10)].map(() => Math.round(Math.random() * 10));
 console.log(array);
-const quickSort = arr => {
+const randomQuickSort = arr => {
   if (arr.length < 2) {
     return arr;
   } else {
-    let middle = arr[Math.floor(arr.length / 2)];
+    let middle = arr[Math.floor(Math.random() * arr.length)];
     let less = [];
     let equal = [];
     let more = [];
@@ -19,7 +19,7 @@ const quickSort = arr => {
         equal.push(arr[i]);
       }
     }
-    return [...quickSort(less), ...equal, ...quickSort(more)];
+    return [...randomQuickSort(less), ...equal, ...randomQuickSort(more)];
   }
 };
-console.log(quickSort(array));
+console.log(randomQuickSort(array));
