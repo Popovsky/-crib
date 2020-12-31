@@ -1,18 +1,12 @@
 import React from 'react';
-import Counter from './components/Counter';
-
-const color = {
-  red: 'red',
-  green: 'green',
-};
-export const MyContext = React.createContext(color);
+import ParentComp from './components/ParentComp';
 
 const App = () => {
-  return <>
-    <MyContext.Provider value={color}>
-      <Counter/>
-    </MyContext.Provider>
-  </>;
+  return (
+    <div>
+      <ParentComp/>
+    </div>
+  );
 };
 
 export default App;
