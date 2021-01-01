@@ -1,10 +1,21 @@
-import React from 'react';
-import Parent from './components/Parent';
+import React, {useState, Suspense} from 'react';
+import withSuspense from './components/withSuspense';
+const Content = React.lazy(() => import('./components/Content'));
 
 const App = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const btnHandler = () => setIsVisible(state => !state);
   return (
     <div>
-      <Parent/>
+      <button onClick={btnHandler}>{isVisible.toString()}</button>
+      {/*{*/}
+      {/*  isVisible && <Suspense fallback={<div>loading...</div>}>*/}
+      {/*    <Content/>*/}
+      {/*  </Suspense>*/}
+      {/*}*/}
+      {
+        isVisible && withSuspense(Content)()
+      }
     </div>
   );
 };
