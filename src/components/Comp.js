@@ -1,18 +1,20 @@
-import React, {Component} from 'react';
+import React, {memo, useRef, useEffect} from 'react';
 
-class Comp extends Component {
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.name[0] !== this.props.name[0];
-  }
+const areEqual = (prevProps, nextProps) => {
+  return prevProps.name[0] === nextProps.name[0];
+};
 
-  render() {
-    console.log('Component');
-    return (
-      <div>
-        Component {this.props.name[0]}
-      </div>
-    );
-  }
-}
+const Comp = props => {
+  const prevName = useRef(null);
+  useEffect(() => {
+    prevName.current = props.name;
+  });
+  console.log('Component');
+  return (
+    <div>
+      Component {props.name} {prevName.current}
+    </div>
+  );
+};
 
-export default Comp;
+export default memo(Comp, areEqual);
